@@ -344,6 +344,12 @@ class HybridRetriever:
         self.embedding_engine = embedding_engine
         self.stop_words = set(stopwords.words("english"))
 
+        if not chunks:
+            # Nothing to index — retrieval will return empty results
+            self.bm25 = None
+            self.chunk_embeddings = np.array([])
+            return
+
         # Build BM25 index
         tokenized_corpus = [self._tokenize(c.text) for c in chunks]
         self.bm25 = BM25Okapi(tokenized_corpus)
@@ -472,6 +478,13 @@ class RAGPipeline:
 
         # 2. Chunk the document
         self.chunks = self.chunker.chunk_document(page_texts)
+
+        if not self.chunks:
+            raise ValueError(
+                "No text could be extracted from this PDF. "
+                "The file may be scanned images, empty, or contain "
+                "only non-extractable content (e.g. pure graphics)."
+            )
 
         # 3. Build hierarchy
         self.hierarchy = self.hierarchy_builder.build_from_chunks(

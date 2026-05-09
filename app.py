@@ -306,7 +306,11 @@ with st.sidebar:
                     chunk_overlap=chunk_overlap,
                 )
 
-                stats = pipeline.process_pdf(uploaded_file, title=uploaded_file.name)
+                try:
+                    stats = pipeline.process_pdf(uploaded_file, title=uploaded_file.name)
+                except ValueError as e:
+                    st.error(f"⚠️ {e}")
+                    st.stop()
 
                 st.session_state.rag_pipeline = pipeline
                 st.session_state.doc_stats = stats
