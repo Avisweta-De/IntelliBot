@@ -372,7 +372,7 @@ if not st.session_state.doc_processed:
 
     st.markdown("""
     <div style="text-align:center; margin-top:2rem; color:var(--text-secondary);">
-        <p style="font-size:1.1rem;">👈 Upload a PDF and enter your GROQ API key to get started</p>
+        <p style="font-size:1.1rem;">👈 Upload a PDF to get started</p>
     </div>
     """, unsafe_allow_html=True)
 
